@@ -1,150 +1,131 @@
 const gameData = [
-    {
-        category: "Python",
-        questions: [
-            { p: 100, q: "Как вывести текст в консоль?", a: "print()" },
-            { p: 200, q: "Тип данных для целых чисел?", a: "int" },
-            { p: 300, q: "Метод для добавления в список?", a: "append()" },
-            { p: 400, q: "Как начать цикл по диапазону чисел?", a: "for i in range():" },
-            { p: 500, q: "Что такое __init__?", a: "Конструктор класса" }
-        ]
-    },
-    {
-        category: "Math",
-        questions: [
-            { p: 100, q: "2 + 2 * 2", a: "6" },
-            { p: 200, q: "Корень из 144", a: "12" },
-            { p: 300, q: "Число Пи до двух знаков", a: "3.14" },
-            { p: 400, q: "Сумма углов треугольника", a: "180" },
-            { p: 500, q: "Факториал числа 4", a: "24" }
-        ]
-    },
-    {
-        category: "Web",
-        questions: [
-            { p: 100, q: "Тег для ссылок?", a: "<a>" },
-            { p: 200, q: "Свойство для жирного текста?", a: "font-weight" },
-            { p: 300, q: "Как объявить константу в JS?", a: "const" },
-            { p: 400, q: "Что такое DOM?", a: "Document Object Model" },
-            { p: 500, q: "Свойство для сетки в CSS?", a: "display: grid" }
-        ]
-    },
-    {
-        category: "Stanford",
-        questions: [
-            { p: 100, q: "В какой стране находится Стэнфорд?", a: "США" },
-            { p: 200, q: "В каком штате находится университет?", a: "Калифорния" },
-            { p: 300, q: "Основатели Google учились там?", a: "Да (Ларри Пейдж и Сергей Брин)" },
-            { p: 400, q: "Цвет Стэнфорда?", a: "Кардинал (красный)" },
-            { p: 500, q: "Год основания?", a: "1885" }
-        ]
-    },
-    {
-        category: "CS",
-        questions: [
-            { p: 100, q: "Минимальная единица информации?", a: "Бит" },
-            { p: 200, q: "Сколько бит в байте?", a: "8" },
-            { p: 300, q: "Что такое CPU?", a: "Центральный процессор" },
-            { p: 400, q: "Алгоритм поиска O(log n)?", a: "Бинарный поиск" },
-            { p: 500, q: "Первый программист в истории?", a: "Ада Лавлейс" }
-        ]
-    }
+    { cat: "Python", qs: [
+        {p: 100, q: "Как вывести текст?", a: "print()"},
+        {p: 200, q: "Список который нельзя изменить?", a: "Tuple (Кортеж)"},
+        {p: 300, q: "Метод добавления в конец списка?", a: "append()"},
+        {p: 400, q: "Библиотека для нейросетей?", a: "TensorFlow / PyTorch"},
+        {p: 500, q: "Что такое __str__?", a: "Метод для строкового представления объекта"}
+    ]},
+    { cat: "Математика", qs: [
+        {p: 100, q: "2 + 2 * 2", a: "6"},
+        {p: 200, q: "Корень из 169", a: "13"},
+        {p: 300, q: "Сумма углов треугольника", a: "180"},
+        {p: 400, q: "Производная от x^2", a: "2x"},
+        {p: 500, q: "Чему равно число e (до 2 знаков)?", a: "2.71"}
+    ]},
+    { cat: "Стэнфорд", qs: [
+        {p: 100, q: "В какой стране университет?", a: "США"},
+        {p: 200, q: "В каком штате?", a: "Калифорния"},
+        {p: 300, q: "Цвет Стэнфорда?", a: "Cardinal Red (Красный)"},
+        {p: 400, q: "Девиз Стэнфорда?", a: "Веет ветер свободы"},
+        {p: 500, q: "Основатель (имя)?", a: "Лиланд Стэнфорд"}
+    ]},
+    { cat: "Web", qs: [
+        {p: 100, q: "Тег ссылки?", a: "<a>"},
+        {p: 200, q: "Свойство для сетки?", a: "display: grid"},
+        {p: 300, q: "Как объявить константу в JS?", a: "const"},
+        {p: 400, q: "Что такое API?", a: "Application Programming Interface"},
+        {p: 500, q: "Первый браузер в истории?", a: "WorldWideWeb (Nexus)"}
+    ]},
+    { cat: "Разное", qs: [
+        {p: 100, q: "Столица Испании?", a: "Мадрид"},
+        {p: 200, q: "Кто создал биткоин?", a: "Сатоши Накамото"},
+        {p: 300, q: "Самая высокая гора?", a: "Эверест"},
+        {p: 400, q: "Сколько планет в солнечной системе?", a: "8"},
+        {p: 500, q: "В каком году распался СССР?", a: "1991"}
+    ]}
 ];
 
 let teams = [];
-let currentTeamIdx = 0;
+let turn = 0;
 let currentVal = 0;
-let currentCard = null;
+let currentEl = null;
 
-// Динамическое создание полей для имен
+// Обновление полей имен
 document.getElementById('team-count').addEventListener('input', function() {
-    const n = Math.min(Math.max(this.value, 2), 5);
+    const n = Math.max(2, Math.min(5, this.value));
     const container = document.getElementById('team-names-inputs');
     container.innerHTML = '';
     for(let i=1; i<=n; i++) {
-        container.innerHTML += `<input type="text" id="t-name-${i}" placeholder="Команда ${i}" value="Команда ${i}">`;
+        container.innerHTML += `<input type="text" id="name-${i}" placeholder="Команда ${i}" value="Команда ${i}">`;
     }
 });
 
 function startGame() {
     const overlay = document.getElementById('transition-overlay');
-    overlay.classList.add('slide-up');
+    overlay.classList.add('slide-active');
 
     setTimeout(() => {
-        const n = document.getElementById('team-count').value;
+        const count = document.getElementById('team-count').value;
         teams = [];
-        for(let i=1; i<=n; i++) {
-            teams.push({ 
-                name: document.getElementById(`t-name-${i}`).value, 
-                score: 0 
-            });
+        for(let i=1; i<=count; i++) {
+            teams.push({ name: document.getElementById(`name-${i}`).value, score: 0 });
         }
-        document.getElementById('setup-screen').style.display = 'none';
+        document.getElementById('setup-screen').classList.add('hidden');
         document.getElementById('game-screen').classList.remove('hidden');
-        render();
+        buildBoard();
         updateUI();
-    }, 600);
+    }, 500);
 
-    setTimeout(() => overlay.classList.remove('slide-up'), 1200);
+    setTimeout(() => overlay.classList.remove('slide-active'), 1000);
 }
 
-function render() {
+function buildBoard() {
     const board = document.getElementById('game-board');
     board.innerHTML = '';
     
-    // Категории
+    // Заголовки
     gameData.forEach(c => {
-        const h = document.createElement('div');
-        h.className = 'category-title';
-        h.innerText = c.category;
-        board.appendChild(h);
+        const div = document.createElement('div');
+        div.className = 'cat-head';
+        div.innerText = c.cat;
+        board.appendChild(div);
     });
 
-    // Очки
+    // Карточки
     for(let i=0; i<5; i++) {
         gameData.forEach(c => {
-            const q = c.questions[i];
+            const q = c.qs[i];
             const div = document.createElement('div');
-            div.className = 'card';
+            div.className = 'q-card';
             div.innerText = q.p;
-            div.onclick = () => openQ(q, div);
+            div.onclick = () => openModal(q, div, c.cat);
             board.appendChild(div);
         });
     }
 }
 
-function openQ(q, el) {
+function openModal(q, el, catName) {
     if(el.classList.contains('used')) return;
-    
     currentVal = q.p;
-    currentCard = el;
-    
+    currentEl = el;
+
+    document.getElementById('modal-category').innerText = catName;
     document.getElementById('modal-question').innerText = q.q;
     document.getElementById('modal-answer').innerText = q.a;
     
-    // Скрываем ответ и кнопки оценки в начале
-    document.getElementById('modal-answer').classList.add('hidden');
-    document.getElementById('answer-section').classList.add('hidden');
+    document.getElementById('answer-box').classList.add('hidden');
+    document.getElementById('result-buttons').classList.add('hidden');
     document.getElementById('show-answer-btn').classList.remove('hidden');
     
     document.getElementById('modal').classList.remove('hidden');
 }
 
 function showAnswer() {
-    document.getElementById('modal-answer').classList.remove('hidden');
-    document.getElementById('answer-section').classList.remove('hidden');
+    document.getElementById('answer-box').classList.remove('hidden');
+    document.getElementById('result-buttons').classList.remove('hidden');
     document.getElementById('show-answer-btn').classList.add('hidden');
 }
 
-function processResult(ok) {
-    if(ok) teams[currentTeamIdx].score += currentVal;
-    else teams[currentTeamIdx].score -= currentVal;
+function processResult(isWin) {
+    if(isWin) teams[turn].score += currentVal;
+    else teams[turn].score -= currentVal;
 
-    currentCard.classList.add('used');
-    currentCard.innerText = '';
+    currentEl.classList.add('used');
+    currentEl.innerText = '';
     
     document.getElementById('modal').classList.add('hidden');
-    currentTeamIdx = (currentTeamIdx + 1) % teams.length;
+    turn = (turn + 1) % teams.length;
     updateUI();
 }
 
@@ -153,12 +134,12 @@ function updateUI() {
     sb.innerHTML = '';
     teams.forEach((t, i) => {
         const d = document.createElement('div');
-        d.className = `team-score ${i === currentTeamIdx ? 'active-team' : ''}`;
-        d.innerHTML = `<div>${t.name}</div><div style="font-size: 1.5rem; font-weight:800">${t.score}</div>`;
+        d.className = `team-item ${i === turn ? 'active' : ''}`;
+        d.innerHTML = `<small>${t.name}</small><div>${t.score}</div>`;
         sb.appendChild(d);
     });
-    document.getElementById('current-team-name').innerText = teams[currentTeamIdx].name;
+    document.getElementById('current-team-display').innerText = teams[turn].name;
 }
 
-// Инициализация при загрузке
+// Инициализация
 document.getElementById('team-count').dispatchEvent(new Event('input'));
