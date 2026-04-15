@@ -1,155 +1,146 @@
 :root {
-    --bg-dark: #0f172a;
-    --bg-card: rgba(30, 41, 59, 0.5);
+    --bg: #020617;
+    --card: #0f172a;
     --accent: #38bdf8;
-    --gold: #fbbf24;
-    --danger: #f43f5e;
+    --text: #f8fafc;
     --success: #10b981;
-    --glass: rgba(255, 255, 255, 0.03);
+    --danger: #f43f5e;
 }
+
+* { box-sizing: border-box; }
 
 body {
-    background: #020617;
-    background-image: 
-        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(15, 23, 42, 1) 0px, transparent 50%);
-    color: #f8fafc;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+.hidden { display: none !important; }
+
+/* Экраны */
+.screen {
     min-height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-x: hidden;
-}
-
-/* Контейнер игры теперь всегда по центру */
-#game-screen {
-    width: 100%;
-    max-width: 1100px;
-    display: flex;
     flex-direction: column;
-    gap: 30px;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
+    animation: fadeIn 0.5s ease;
 }
 
-/* Сетка с категориями */
-.grid-container {
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Настройка */
+.setup-card {
+    background: var(--card);
+    padding: 40px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 { font-weight: 900; font-size: 3rem; margin: 0; letter-spacing: -2px; }
+.subtitle { color: var(--accent); font-weight: 700; margin-bottom: 30px; letter-spacing: 4px; }
+
+.input-group { margin-bottom: 20px; text-align: left; }
+.input-group label { display: block; margin-bottom: 8px; font-size: 0.8rem; opacity: 0.7; }
+
+input {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #334155;
+    padding: 12px;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+}
+
+.names-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 15px 40px;
+    border-radius: 12px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+}
+
+/* Игровое поле */
+.top-bar { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+#scoreboard { display: flex; gap: 15px; }
+.team-item { background: var(--card); padding: 10px 20px; border-radius: 12px; border: 1px solid transparent; transition: 0.3s; }
+.team-item.active { border-color: var(--accent); box-shadow: 0 0 15px rgba(56,189,248,0.3); transform: translateY(-5px); }
+
+.board-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 15px;
+    width: 100%;
+    max-width: 1200px;
 }
 
-.category-title {
-    background: var(--glass);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 20px 10px;
-    border-radius: 12px;
-    text-align: center;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent);
-}
-
-.card {
-    background: var(--bg-card);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+.cat-head { text-align: center; font-weight: 700; color: var(--accent); padding: 10px; font-size: 0.8rem; text-transform: uppercase; }
+.q-card {
+    background: var(--card);
     height: 100px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    font-weight: 800;
-    border-radius: 12px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(5px);
-}
-
-.card:hover:not(.used) {
-    transform: translateY(-5px) scale(1.02);
-    border-color: var(--accent);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
-    background: rgba(56, 189, 248, 0.1);
-}
-
-/* Модальное окно — теперь ПО ЦЕНТРУ и КРАСИВОЕ */
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(2, 6, 23, 0.85);
-    backdrop-filter: blur(15px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
-
-.modal-content {
-    background: #1e293b;
-    width: 90%;
-    max-width: 700px;
-    padding: 50px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    text-align: center;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-#modal-question {
-    font-size: 2rem;
-    line-height: 1.4;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
-
-#modal-answer {
-    font-size: 1.8rem;
-    color: var(--accent);
-    margin: 20px 0;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 15px;
-}
-
-/* Кнопки */
-.admin-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-button {
-    padding: 15px 35px;
-    border-radius: 14px;
-    font-weight: 700;
+    font-weight: 900;
     cursor: pointer;
-    transition: 0.2s;
-    border: none;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: 0.3s;
+}
+.q-card:hover { border-color: var(--accent); background: #1e293b; transform: scale(1.05); }
+.q-card.used { opacity: 0.2; pointer-events: none; position: relative; }
+.q-card.used::after { content: ""; position: absolute; width: 60%; height: 2px; background: var(--danger); transform: rotate(45deg); }
+
+/* Модалка */
+.modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(2,6,23,0.95); backdrop-filter: blur(10px); }
+.modal-content {
+    position: relative;
+    background: var(--card);
+    width: 100%;
+    max-width: 700px;
+    padding: 60px;
+    border-radius: 32px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
-#show-answer-btn { background: var(--accent); color: #000; }
-.btn-correct { background: var(--success); color: #fff; }
-.btn-wrong { background: var(--danger); color: #fff; }
+.modal-cat-label { color: var(--accent); letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 10px; }
+#modal-question { font-size: 2.2rem; margin: 0 0 30px 0; line-height: 1.2; }
+.divider { height: 1px; background: rgba(255,255,255,0.1); margin: 30px 0; }
+#modal-answer { font-size: 1.8rem; color: var(--accent); font-weight: 700; }
 
-button:hover { transform: scale(1.05); filter: brightness(1.1); }
+.modal-actions { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.result-group { display: flex; gap: 10px; width: 100%; }
+.btn-result { flex: 1; padding: 15px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; }
+.btn-result.correct { background: var(--success); color: white; }
+.btn-result.wrong { background: var(--danger); color: white; }
+.btn-action.main { background: white; color: black; padding: 15px 30px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; }
 
-/* Счет команд сверху */
-#scoreboard {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+/* Оверлей перехода */
+#transition-overlay {
+    position: fixed; inset: 0; background: var(--accent); z-index: 200;
+    transform: translateY(100%); pointer-events: none;
 }
-
-.team-score {
-    background: var(--glass);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 15px 25px;
-    border-radius: 16px;
-    min-width: 150px;
-}
-
-.active-team {
-    border-color: var(--accent);
-    background: rgba(56, 189, 248, 0.1);
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
-}
+.slide-active { animation: slide 1s cubic-bezier(0.85, 0, 0.15, 1); }
+@keyframes slide { 0% { transform: translateY(100%); } 50% { transform: translateY(0); } 100% { transform: translateY(-100%); } }
