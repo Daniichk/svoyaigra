@@ -1,96 +1,100 @@
-// 1. ДАННЫЕ ИГРЫ (Вопросы и категории)
 const gameData = [
     {
         category: "Python",
         questions: [
-            { p: 100, q: "Как вывести текст в консоль?", a: "print()" },
-            { p: 200, q: "Как называется список, который нельзя изменять?", a: "Tuple (кортеж)" },
-            { p: 300, q: "Функция для получения случайного числа?", a: "random.randint()" },
-            { p: 400, q: "Что делает метод .append()?", a: "Добавляет элемент в конец списка" },
-            { p: 500, q: "Как называется магический метод инициализации объекта?", a: "__init__" }
+            { p: 100, q: "Как вывести текст в консоль?", a: "Используйте print()" },
+            { p: 200, q: "Неизменяемый список в Python?", a: "Tuple" },
+            { p: 300, q: "Метод добавления в список?", a: "append()" },
+            { p: 400, q: "Библиотека для работы с данными?", a: "Pandas" },
+            { p: 500, q: "Тип данных для True/False?", a: "Boolean" }
         ]
     },
     {
         category: "Math",
         questions: [
-            { p: 100, q: "Чему равно 5 в квадрате?", a: "25" },
-            { p: 200, q: "Результат умножения называется...", a: "Произведение" },
-            { p: 300, q: "Сумма углов в треугольнике?", a: "180 градусов" },
-            { p: 400, q: "Чему равно число Пи (до 2 знаков)?", a: "3.14" },
-            { p: 500, q: "Как называется график функции y = x²?", a: "Парабола" }
+            { p: 100, q: "2 плюс 2 умножить на 2?", a: "6" },
+            { p: 200, q: "Корень из 144?", a: "12" },
+            { p: 300, q: "Число Пи до двух знаков?", a: "3.14" },
+            { p: 400, q: "Сумма углов квадрата?", a: "360 градусов" },
+            { p: 500, q: "Чему равен факториал 4?", a: "24" }
         ]
     },
     {
-        category: "HTML/CSS",
+        category: "Computer Science",
         questions: [
-            { p: 100, q: "Тег для создания ссылки?", a: "<a>" },
-            { p: 200, q: "Как сделать текст жирным в CSS?", a: "font-weight: bold" },
-            { p: 300, q: "Что такое Box Model в CSS?", a: "Margin, Border, Padding, Content" },
-            { p: 400, q: "Свойство для создания сетки элементов?", a: "display: grid" },
-            { p: 500, q: "Для чего нужен атрибут 'alt' у картинки?", a: "Альтернативный текст для доступности" }
+            { p: 100, q: "Минимальная единица информации?", a: "Бит" },
+            { p: 200, q: "8 бит это один...", a: "Байт" },
+            { p: 300, q: "Что такое CPU?", a: "Процессор" },
+            { p: 400, q: "Первая версия протокола интернета?", a: "IPv4" },
+            { p: 500, q: "Сложность бинарного поиска?", a: "O(log n)" }
         ]
     },
     {
-        category: "JS",
+        category: "Frontend",
         questions: [
-            { p: 100, q: "Как объявить переменную, которая не меняется?", a: "const" },
-            { p: 200, q: "Какое событие отвечает за клик мышкой?", a: "onclick или addEventListener('click')" },
-            { p: 300, q: "Что такое DOM?", a: "Document Object Model" },
-            { p: 400, q: "Как превратить строку в целое число?", a: "parseInt()" },
-            { p: 500, q: "Что вернет typeof []?", a: "'object'" }
+            { p: 100, q: "Тег для ссылок?", a: "<a>" },
+            { p: 200, q: "Свойство цвета текста в CSS?", a: "color" },
+            { p: 300, q: "Как объявить константу в JS?", a: "const" },
+            { p: 400, q: "Для чего нужен flexbox?", a: "Для выравнивания элементов" },
+            { p: 500, q: "Что такое React?", a: "Библиотека для интерфейсов" }
         ]
     },
     {
-        category: "Stanford & CS",
+        category: "General",
         questions: [
-            { p: 100, q: "В каком штате находится Стэнфорд?", a: "Калифорния" },
-            { p: 200, q: "Минимальная единица информации?", a: "Бит" },
-            { p: 300, q: "Основатель компании Apple, учившийся в Стэнфорде (бросил)?", a: "Стив Джобс (но Стэнфорд закончили другие гиганты, например Брин и Пейдж)" },
-            { p: 400, q: "Как называется алгоритм сортировки O(n log n)?", a: "Merge Sort / Quick Sort" },
-            { p: 500, q: "Как расшифровывается CPU?", a: "Central Processing Unit" }
+            { p: 100, q: "Столица Испании?", a: "Мадрид" },
+            { p: 200, q: "Самый глубокий океан?", a: "Тихий" },
+            { p: 300, q: "Год основания Стэнфорда?", a: "1885" },
+            { p: 400, q: "Кто написал 'Войну и мир'?", a: "Лев Толстой" },
+            { p: 500, q: "Химический символ золота?", a: "Au" }
         ]
     }
 ];
 
-// 2. ПЕРЕМЕННЫЕ СОСТОЯНИЯ
 let teams = [];
 let currentTeamIdx = 0;
 let currentQuestionValue = 0;
 let currentCardElement = null;
 
-// Слушатель для динамического создания полей ввода имен команд
+// Динамические поля ввода
 document.getElementById('team-count').addEventListener('input', function() {
     const count = Math.min(Math.max(this.value, 2), 5);
     const container = document.getElementById('team-names-inputs');
     container.innerHTML = '';
     for (let i = 1; i <= count; i++) {
-        container.innerHTML += `<input type="text" id="team-name-${i}" placeholder="Имя команды ${i}" value="Команда ${i}">`;
+        container.innerHTML += `<input type="text" id="team-name-${i}" placeholder="Название ${i}" value="Команда ${i}">`;
     }
 });
 
-// Запуск игры
 function startGame() {
-    const count = document.getElementById('team-count').value;
-    teams = [];
-    
-    for (let i = 1; i <= count; i++) {
-        const name = document.getElementById(`team-name-${i}`).value || `Команда ${i}`;
-        teams.push({ name: name, score: 0 });
-    }
+    const overlay = document.getElementById('transition-overlay');
+    overlay.classList.add('slide-up');
 
-    document.getElementById('setup-screen').classList.add('hidden');
-    document.getElementById('game-screen').classList.remove('hidden');
+    // Начинаем логику в середине анимации
+    setTimeout(() => {
+        const count = document.getElementById('team-count').value;
+        teams = [];
+        for (let i = 1; i <= count; i++) {
+            const name = document.getElementById(`team-name-${i}`).value || `Команда ${i}`;
+            teams.push({ name: name, score: 0 });
+        }
 
-    renderBoard();
-    updateUI();
+        document.getElementById('setup-screen').style.display = 'none';
+        document.getElementById('game-screen').classList.remove('hidden');
+        renderBoard();
+        updateUI();
+    }, 600);
+
+    // Убираем класс анимации после завершения
+    setTimeout(() => {
+        overlay.classList.remove('slide-up');
+    }, 1200);
 }
 
-// Отрисовка игрового поля
 function renderBoard() {
     const board = document.getElementById('game-board');
-    board.innerHTML = ''; // Очистка
+    board.innerHTML = '';
 
-    // Рисуем заголовки категорий
     gameData.forEach(cat => {
         const h = document.createElement('div');
         h.className = 'category-title';
@@ -98,81 +102,59 @@ function renderBoard() {
         board.appendChild(h);
     });
 
-    // Рисуем сетку вопросов (по строкам для правильного порядка)
     for (let i = 0; i < 5; i++) {
-        gameData.forEach((cat, catIdx) => {
-            const questionData = cat.questions[i];
+        gameData.forEach(cat => {
+            const q = cat.questions[i];
             const card = document.createElement('div');
             card.className = 'card';
-            card.innerText = questionData.p;
-            card.onclick = () => openQuestion(questionData, card);
+            card.innerText = q.p;
+            card.onclick = () => openQuestion(q, card);
             board.appendChild(card);
         });
     }
 }
 
-// Открытие вопроса
 function openQuestion(data, card) {
     if (card.classList.contains('used')) return;
-
     currentQuestionValue = data.p;
     currentCardElement = card;
-
     document.getElementById('modal-question').innerText = data.q;
     document.getElementById('modal-answer').innerText = data.a;
-    
-    // Сброс модалки
     document.getElementById('modal').classList.remove('hidden');
     document.getElementById('answer-section').classList.add('hidden');
     document.getElementById('show-answer-btn').classList.remove('hidden');
 }
 
-// Показать ответ
 function showAnswer() {
     document.getElementById('answer-section').classList.remove('hidden');
     document.getElementById('show-answer-btn').classList.add('hidden');
 }
 
-// Обработка результата (Верно/Неверно)
 function processResult(isCorrect) {
     if (isCorrect) {
         teams[currentTeamIdx].score += currentQuestionValue;
     } else {
         teams[currentTeamIdx].score -= currentQuestionValue;
     }
-
-    // Помечаем карточку как использованную
     currentCardElement.classList.add('used');
-    currentCardElement.innerText = ''; // Убираем цифры, оставляем крестик из CSS
-    
-    // Закрываем модалку
+    currentCardElement.innerText = '';
     document.getElementById('modal').classList.add('hidden');
-
-    // Переход хода к следующей команде
     currentTeamIdx = (currentTeamIdx + 1) % teams.length;
-    
     updateUI();
 }
 
-// Обновление интерфейса (очки и чей ход)
 function updateUI() {
     const scoreboard = document.getElementById('scoreboard');
     scoreboard.innerHTML = '';
-
     teams.forEach((team, i) => {
         const div = document.createElement('div');
         div.className = `team-score ${i === currentTeamIdx ? 'active-team' : ''}`;
-        div.innerHTML = `
-            <div class="t-name">${team.name}</div>
-            <div class="t-points">${team.score}</div>
-        `;
+        div.innerHTML = `<div>${team.name}</div><div style="font-size: 1.5rem; font-weight: 800">${team.score}</div>`;
         scoreboard.appendChild(div);
     });
-
     document.getElementById('current-team-name').innerText = teams[currentTeamIdx].name;
 }
 
-// Инициализация полей при загрузке
 window.onload = () => {
     document.getElementById('team-count').dispatchEvent(new Event('input'));
 };
