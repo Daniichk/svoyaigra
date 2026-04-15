@@ -3,43 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Своя Игра</title>
+    <title>SVOYA IGRA | PREMIUM</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <div id="transition-overlay"></div>
+
     <div id="setup-screen" class="screen">
-        <h1>Своя Игра</h1>
-        <div class="setup-box">
-            <label>Количество команд (2-5):</label>
-            <input type="number" id="team-count" min="2" max="5" value="2">
-            <div id="team-names-inputs"></div>
-            <button onclick="startGame()">Начать игру</button>
+        <div class="setup-card">
+            <h1>СВОЯ ИГРА</h1>
+            <p class="subtitle">PREMIUM EDITION</p>
+            
+            <div class="input-group">
+                <label>Количество команд</label>
+                <input type="number" id="team-count" min="2" max="5" value="2">
+            </div>
+
+            <div id="team-names-inputs" class="names-grid">
+                </div>
+
+            <button class="btn-primary" onclick="startGame()">Начать битву</button>
         </div>
     </div>
 
     <div id="game-screen" class="screen hidden">
-        <header>
-            <div id="turn-indicator">Ход команды: <span id="current-team-name">-</span></div>
+        <div class="top-bar">
             <div id="scoreboard"></div>
-        </header>
+            <div class="current-info">Ход: <span id="current-team-display">-</span></div>
+        </div>
         
-        <div id="game-board" class="grid-container"></div>
+        <div id="game-board" class="board-grid"></div>
     </div>
 
     <div id="modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
         <div class="modal-content">
-            <h2 id="modal-category"></h2>
-            <p id="modal-question"></p>
-            <div id="answer-section" class="hidden">
-                <hr>
-                <p id="modal-answer"></p>
-                <div class="admin-buttons">
-                    <button class="btn-correct" onclick="processResult(true)">Верно ✅</button>
-                    <button class="btn-wrong" onclick="processResult(false)">Неверно ❌</button>
+            <div id="modal-category" class="modal-cat-label">КАТЕГОРИЯ</div>
+            <h2 id="modal-question">Текст вопроса появится здесь?</h2>
+            
+            <div id="answer-box" class="answer-box hidden">
+                <div class="divider"></div>
+                <p id="modal-answer">Ответ</p>
+            </div>
+
+            <div class="modal-actions">
+                <button id="show-answer-btn" class="btn-action main" onclick="showAnswer()">Показать ответ</button>
+                
+                <div id="result-buttons" class="result-group hidden">
+                    <button class="btn-result correct" onclick="processResult(true)">Верно</button>
+                    <button class="btn-result wrong" onclick="processResult(false)">Неверно</button>
                 </div>
             </div>
-            <button id="show-answer-btn" onclick="showAnswer()">Показать ответ</button>
         </div>
     </div>
 
