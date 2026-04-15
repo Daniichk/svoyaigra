@@ -1,0 +1,101 @@
+:root {
+    --bg: #0f172a;
+    --card-bg: #1e293b;
+    --accent: #38bdf8;
+    --gold: #fbbf24;
+    --wrong: #ef4444;
+    --correct: #22c55e;
+}
+
+body {
+    background: var(--bg);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.screen { width: 100%; max-width: 1200px; padding: 20px; transition: 0.5s; }
+.hidden { display: none !important; }
+
+/* Сетка игры */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.category-title {
+    text-align: center;
+    font-weight: bold;
+    padding: 15px;
+    background: var(--accent);
+    border-radius: 8px;
+    color: var(--bg);
+}
+
+.card {
+    background: var(--card-bg);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    position: relative;
+}
+
+.card:hover { transform: scale(1.05); background: #334155; }
+
+/* Зачеркивание крестиком */
+.card.used {
+    pointer-events: none;
+    opacity: 0.5;
+    background: #000;
+}
+.card.used::after {
+    content: "✕";
+    position: absolute;
+    color: var(--wrong);
+    font-size: 4rem;
+}
+
+/* Модалка */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 0 30px var(--accent);
+}
+
+#scoreboard { display: flex; gap: 20px; justify-content: center; margin-bottom: 20px; }
+.team-score { background: #334155; padding: 10px 20px; border-radius: 10px; border-bottom: 4px solid var(--accent); }
+.active-team { border-bottom-color: var(--gold); transform: scale(1.1); }
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin: 5px;
+}
+.btn-correct { background: var(--correct); color: white; }
+.btn-wrong { background: var(--wrong); color: white; }
