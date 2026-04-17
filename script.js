@@ -118,8 +118,10 @@ function showAnswer() {
 }
 
 function processResult(isWin) {
-    if(isWin) teams[turn].score += currentVal;
-    else teams[turn].score -= currentVal;
+    if(isWin) {
+        teams[turn].score += currentVal;
+    }
+    // Если isWin === false, мы просто ничего не делаем со счетом
 
     currentEl.classList.add('used');
     currentEl.innerText = '';
