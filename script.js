@@ -40,6 +40,7 @@ let teams = [];
 let turn = 0;
 let currentVal = 0;
 let currentEl = null;
+let timerInterval; // Для управления таймером
 
 // Обновление полей имен
 document.getElementById('team-count').addEventListener('input', function() {
@@ -74,7 +75,6 @@ function buildBoard() {
     const board = document.getElementById('game-board');
     board.innerHTML = '';
     
-    // Заголовки
     gameData.forEach(c => {
         const div = document.createElement('div');
         div.className = 'cat-head';
@@ -82,7 +82,6 @@ function buildBoard() {
         board.appendChild(div);
     });
 
-    // Карточки
     for(let i=0; i<5; i++) {
         gameData.forEach(c => {
             const q = c.qs[i];
@@ -109,19 +108,48 @@ function openModal(q, el, catName) {
     document.getElementById('show-answer-btn').classList.remove('hidden');
     
     document.getElementById('modal').classList.remove('hidden');
+
+    startTimer(30); // Запуск таймера
+}
+
+function startTimer(seconds) {
+    clearInterval(timerInterval);
+    const display = document.getElementById('timer-display');
+    if (!display) return; // На случай если HTML еще не обновили
+
+    display.classList.remove('time-up');
+    display.style.color = "var(--accent)";
+    let timeLeft = seconds;
+    display.innerText = timeLeft;
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        display.innerText = timeLeft;
+
+        if (timeLeft <= 5) {
+            display.style.color = "var(--danger)";
+        }
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            display.classList.add('time-up');
+            display.innerText = "ВРЕМЯ ВЫШЛО";
+        }
+    }, 1000);
 }
 
 function showAnswer() {
+    clearInterval(timerInterval); // Стоп таймер при просмотре ответа
     document.getElementById('answer-box').classList.remove('hidden');
     document.getElementById('result-buttons').classList.remove('hidden');
     document.getElementById('show-answer-btn').classList.add('hidden');
 }
 
 function processResult(isWin) {
+    clearInterval(timerInterval); // Стоп таймер при результате
     if(isWin) {
         teams[turn].score += currentVal;
     }
-    // Если isWin === false, мы просто ничего не делаем со счетом
 
     currentEl.classList.add('used');
     currentEl.innerText = '';
@@ -143,5 +171,4 @@ function updateUI() {
     document.getElementById('current-team-display').innerText = teams[turn].name;
 }
 
-// Инициализация
 document.getElementById('team-count').dispatchEvent(new Event('input'));
