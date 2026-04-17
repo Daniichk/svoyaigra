@@ -144,3 +144,21 @@ input {
 }
 .slide-active { animation: slide 1s cubic-bezier(0.85, 0, 0.15, 1); }
 @keyframes slide { 0% { transform: translateY(100%); } 50% { transform: translateY(0); } 100% { transform: translateY(-100%); } }
+.timer {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-variant-numeric: tabular-nums; /* Чтобы цифры не прыгали */
+}
+
+.timer.time-up {
+    color: var(--danger) !important;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
